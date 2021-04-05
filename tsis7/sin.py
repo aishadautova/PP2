@@ -29,12 +29,12 @@ while not done:
     x1 = round(x1)
     x2 = round(x2)
 
-    pygame.draw.line(screen, BLACK, [0, 250], [700, 250], 2)
-    pygame.draw.line(screen, BLACK, [350 - (3*PI), 0], [350 - (3*PI), 500], 2)
+    pygame.draw.line(screen, BLACK, [0, 250], [700, 250], 1)
+    pygame.draw.line(screen, BLACK, [350 - (3*PI), 0], [350 - (3*PI), 500], 1)
 
 
-    pygame.draw.line(screen, (225, 10, 10), [a1, b1], [x1, y1], 2)
-    pygame.draw.line(screen, (10, 10, 225), [a2, b2], [x2, y2], 2)
+    pygame.draw.aalines(screen, (225, 10, 10), True, [(a1, b1), (x1, y1)], 1)
+    pygame.draw.aalines(screen, (10, 10, 225), True, [(a2, b2), (x2, y2)], 1)
     a1 = x1
     b1 = y1
     y1 = 250
