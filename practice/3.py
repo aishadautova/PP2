@@ -1,17 +1,33 @@
-class Solution(object):
-    def numIdenticalPairs(self, nums):
-        """
-        :type nums: List[int]
-        :rtype: int
-        """
-        cnt = 0
-        
-        for i in range(len(nums)):
+n=int(input())
+items=dict()
+
+for i in range(n):
+
+    a = list(input().split())
+
+    x = a[0]
+
+    y = int(a[1])
+
+    for j in range(2,len(a)):
+
+        items[a[j]] = x
+
+m=int(input())
+list1=[]
+
+for i in range(m):
+
+    s=input()
+    k=True
+
+    for key in items.keys():
+
+        if key==s:
             
-            for j in range(i+1, len(nums)):
-                
-                if nums[i] == nums[j] and i<j:
-                    
-                    cnt += 1
-        
-        print(cnt)
+            print(items[key])
+
+            k=False
+            
+    if k:
+        print("Unknown")
