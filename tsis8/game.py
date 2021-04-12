@@ -21,7 +21,7 @@ WHITE = (255, 255, 255)
 #Other Variables for use in the program
 SCREEN_WIDTH = 400
 SCREEN_HEIGHT = 600
-SPEED = 5
+SPEED = random.randint(1, 5)
 SCORE = 0
 SCORE1 = 0
  
@@ -47,10 +47,12 @@ class Enemy(pygame.sprite.Sprite):
       def move(self):
 
         global SCORE
+        global SPEED
         self.rect.move_ip(0, SPEED)
 
         if (self.rect.top > 600):
             SCORE += 1
+            SPEED = random.randint(1, 5)
             self.rect.top = 0
             self.rect.center = (random.randint(40, SCREEN_WIDTH - 40), 0)
  
@@ -92,8 +94,8 @@ class coin(pygame.sprite.Sprite):
 
     def __init__(self):
         super().__init__() 
-        self.image = pygame.image.load("sdoh.png")
-        self.surf = pygame.Surface((24, 27))
+        self.image = pygame.image.load("coin.png")
+        self.surf = pygame.Surface((20, 20))
         self.rect = self.surf.get_rect(center = (random.randint(40,SCREEN_WIDTH-40), 0))
 
     def move(self):
