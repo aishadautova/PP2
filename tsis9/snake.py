@@ -3,22 +3,31 @@ import random, os
 pygame.init()
 screen = pygame.display.set_mode((400, 400))
 
-f = open("size.txt", "w")
-f.write('')
-f.close()
-f = open("scores.txt", "w")
-f.write('')
-f.close()
-f = open("elements.txt", "w")
-f.write('')
-f.close()
-safe = False
+if not os.path.exists("scoresl1.txt"):
+    f1 = open("snakel1.data", 'w')
+    f2 = open("snakel2.data", 'w')
+    f3 = open("snakel3.data", 'w')
+    f1.write("")
+    f2.write("")
+    f2.write("")
+    f1.close()
+    f2.close()
+    f3.close()
+    f1 = open("scoresl1.txt", 'w')
+    f2 = open("scoresl2.txt", 'w')
+    f3 = open("scoresl3.txt", 'w')
+    f1.write("")
+    f2.write("")
+    f2.write("")
+    f1.close()
+    f2.close()
+    f3.close()
 
 class Food:
     def __init__(self):
         self.x = random.randint(5, 395)
         self.y = random.randint(5, 395)
-        
+
         if 55-5 <= self.x <= 85+5 and 95-5 <= self.y <= 355+5:
             self.x = random.randint(5, 395)
             self.y = random.randint(5, 395)
@@ -60,22 +69,8 @@ class Food:
 class Snake:
 
     def __init__(self):
-
-        if safe:
-            f = open("size.txt", "rb")
-            s = int(pickle.load(f))
-            self.size = s
-            f.close()
-
-            f = open("elements.txt", "rb")
-            s = list(pickle.load(f))
-            self.elements = s
-            f.close
-
-        else:
-            self.size = 1
-            self.elements = [[200, 100]]
-        
+        self.size = 1
+        self.elements = [[200, 100]]
         self.radius = 10
         self.dx = 5 # right
         self.dy = 0
@@ -88,6 +83,8 @@ class Snake:
         for element in self.elements:
             pygame.draw.circle(screen, (225, 0, 0), element, self.radius)
             screen.blit(text, (3, 3))
+            if not play:
+                screen.blit(tt, (140, 383))
             scores = font.render(str(SCORE1), True, (255, 255, 255))
             screen.blit(scores, (50, 4))
 
@@ -140,7 +137,7 @@ class Snake:
         x = self.elements[0][0]
         y = self.elements[0][1]
 
-        if foodx <= x <= foodx + 10 and foody <= y <= foody +10:
+        if foodx <= x <= foodx + 10 and foody <= y <= foody + 10:
             return True
 
 class Snake2:
@@ -197,6 +194,7 @@ class Snake2:
         if foodx <= x <= foodx + 10 and foody <= y <= foody +10:
             return True
 
+
 snake = Snake()
 snake2 = Snake2()
 food = Food()
@@ -209,6 +207,7 @@ level1 = False
 level2 = False
 level3 = False
 play = False
+
 pygame.draw.rect(screen, (220, 10, 60), (100, 60, 200, 50))
 pygame.draw.rect(screen, (220, 10, 60), (100, 140, 200, 50))
 pygame.draw.rect(screen, (220, 10, 60), (100, 220, 200, 50))
@@ -216,6 +215,7 @@ pygame.draw.rect(screen, (60, 10, 220), (100, 300, 200, 50))
 
 font = pygame.font.Font(None, 20)
 text = font.render("Score:", True, (255, 255, 255))
+tt = font.render("e - Save    n - New game    f - Saved game", True, (255, 255, 255))
 SCORE1 = 0
 SCORE2 = 0
 win = pygame.font.Font(None, 50)
@@ -235,7 +235,7 @@ while running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            pygame.quit()
+            #pygame.quit()
             running = False
 
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -244,35 +244,14 @@ while running:
             y = A[1] 
 
             if 100 < x < 300 and 60 < y < 110:
-
-                if os.path.getsize('scores.txt') != 0:
-                    safe = True
-                    f = open("scores.txt", "r")
-                    A = f.read()
-                    SCORE1 = int(A)
-                
                 screen.fill((0, 0, 0))
                 level1 = True
             
             if 100 < x < 300 and 140 < y < 190:
-
-                if os.path.getsize('scores.txt') != 0:
-                    safe = True
-                    f = open("scores.txt", "r")
-                    A = f.read()
-                    SCORE1 = int(A)
-
                 screen.fill((0, 0, 0))
                 level2 = True
             
             if 100 < x < 300 and 220 < y < 270:
-                
-                if os.path.getsize('scores.txt') != 0:
-                    safe = True
-                    f = open("scores.txt", "r")
-                    A = f.read()
-                    SCORE1 = int(A)
-
                 screen.fill((0, 0, 0))
                 level3 = True
             
@@ -282,22 +261,61 @@ while running:
         
         if event.type == pygame.KEYDOWN:
 
-            if event.key == pygame.K_s:
-                f = open("scores.txt", "w")
-                s = str(SCORE1)
-                f.write(s)
+            if event.key == pygame.K_e:
+                if level1:
+                    f = open("scoresl1.txt", "w")
+                    f.write(str(SCORE1))
+                    f.close()
+                    f = open("snakel1.data", 'bw')
+                    pickle.dump(snake, f)
+                    f.close()
+                if level2:
+                    f = open("scoresl2.txt", "w")
+                    f.write(str(SCORE1))
+                    f.close()
+                    f = open("snakel2.data", 'bw')
+                    pickle.dump(snake, f)
+                    f.close()
+                if level3:
+                    f = open("scoresl3.txt", "w")
+                    f.write(str(SCORE1))
+                    f.close()
+                    f = open("snakel3.data", 'bw')
+                    pickle.dump(snake, f)
+                    f.close()
 
-                f1 = open("elements.txt", "wb")
-                s = str(snake.elements)
-                pickle.dump(s, f1)
+            if event.key == pygame.K_f:
+                if level1 and os.path.getsize("scoresl1.txt") != 0:
+                    f = open("snakel1.data", 'br')
+                    snake = pickle.load(f)
+                    f.close
+                    f = open("scoresl1.txt", "r")
+                    A = f.read()
+                    SCORE1 = int(A)
                 
-                f2 = open("size.txt", "wb")
-                s = str(snake.size)
-                pickle.dump(s, f2)
-
-                f2.close()
-                f1.close
+                if level2 and os.path.getsize("scoresl2.txt") != 0:
+                    f = open("snakel2.data", 'br')
+                    snake = pickle.load(f)
+                    f.close
+                    f = open("scoresl2.txt", "r")
+                    A = f.read()
+                    SCORE1 = int(A)
+                
+                if level3 and os.path.getsize("scoresl3.txt") != 0:
+                    f = open("snakel3.data", 'br')
+                    snake = pickle.load(f)
+                    f.close
+                    f = open("scoresl3.txt", "r")
+                    A = f.read()
+                    SCORE1 = int(A)
+                
+            if event.key == pygame.K_n and not play:
+                f = open("scores.txt", "w")
+                f.write('')
                 f.close()
+                SCORE1 = 0
+                screen.fill((0, 0, 0))
+                snake = Snake()
 
             if event.key == pygame.K_ESCAPE:
                 running = False
@@ -343,8 +361,6 @@ while running:
         food.gen()
     
     if snake2.eat(food.x, food.y):
-        if level3:
-            d += 0.5
         SCORE2 += 1
         snake2.is_add = True
         food.gen()
